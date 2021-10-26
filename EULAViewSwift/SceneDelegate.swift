@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Pods_EULAViewSwift
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -16,9 +17,32 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard let _ = (scene as? UIWindowScene) else { return }
+//        guard let _ = (scene as? UIWindowScene) else { return }
+        
+        let windowScene = scene as? UIWindowScene
+        if let windowScene = windowScene {
+            window = UIWindow(windowScene: windowScene)
+        }
+        window?.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
+        if UserDefaults.standard.object(forKey: "firstValue") == nil {
+            addUserNegotiateView()
+        }else{
+            window?.rootViewController = ViewController()
+        }
+        window?.makeKeyAndVisible()
+        
     }
-
+    func addUserNegotiateView() {
+        let alertView = EULAView(frame: window!.bounds)
+        window!.addSubview(alertView)
+        alertView.selectedData = { [self] s in
+            if s {
+                window?.rootViewController = ViewController()
+            } else {
+                print("不同意")
+            }
+        }
+    }
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
         // This occurs shortly after the scene enters the background, or when its session is discarded.

@@ -9,11 +9,12 @@ import Foundation
 import UIKit
 import SnapKitExtend
 
-public class EULAView: UIView,UITextViewDelegate,UIGestureRecognizerDelegate{
+ class EULAView: UIView,UITextViewDelegate,UIGestureRecognizerDelegate{
+     var selectedData: ((_ s: Bool) -> Void)?
     internal lazy var backgroundView: UIButton = {
         let backgroundView = UIButton()
-        let color = UIColor(red: 18 / 255.0, green: 18 / 255.0, blue: 18 / 255.0, alpha: 1.0)
-        backgroundView.backgroundColor = color.withAlphaComponent(1.0)
+        let color = UIColor.white//UIColor(red: 18 / 255.0, green: 18 / 255.0, blue: 18 / 255.0, alpha: 1.0)
+        backgroundView.backgroundColor = color.withAlphaComponent(0.7)
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
         backgroundView.isUserInteractionEnabled = true
         return backgroundView
@@ -39,18 +40,22 @@ public class EULAView: UIView,UITextViewDelegate,UIGestureRecognizerDelegate{
         backgroundView.addSubview(contentDView)
         
         contentDView.snp.makeConstraints { make in
-            make.left.equalTo(backgroundView).offset(47)
-            make.right.equalTo(backgroundView).offset(-47)
-            make.centerY.equalTo(backgroundView)
-            make.height.equalTo(300)
+//            make.left.equalTo(backgroundView).offset(47)
+//            make.right.equalTo(backgroundView).offset(-47)
+//            make.centerY.equalTo(backgroundView)
+//            make.height.equalTo(300)
+            make.centerX.equalTo(backgroundView.snp.centerX);
+            make.centerY.equalTo(backgroundView.snp.centerY).offset(-20);
+            make.size.equalTo(CGSize(width: 282, height: 308));
         }
         //不同意按钮
         let disagree = UIButton()
-        disagree.backgroundColor = UIColor.white
+        disagree.backgroundColor = UIColor(red: 245 / 255.0, green: 245 / 255.0, blue: 246 / 255.0, alpha: 1.0)
         disagree.setTitle("不同意并退出", for: UIControl.State.normal)
         disagree.layer.cornerRadius = 20
         disagree.setTitleColor(UIColor(red: 155 / 255.0, green: 153 / 255.0, blue: 169 / 255.0, alpha: 1.0), for: .normal)
         disagree.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        disagree.addTarget(self,action:#selector(clickDisagree), for: .touchUpInside)
         backgroundView .addSubview(disagree)
         
         //同意按钮
@@ -60,12 +65,13 @@ public class EULAView: UIView,UITextViewDelegate,UIGestureRecognizerDelegate{
         agree.setTitleColor(UIColor.white, for: .normal)
         agree.layer.cornerRadius = 20
         agree.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        agree.addTarget(self,action:#selector(clickRemove), for: .touchUpInside)
         backgroundView .addSubview(agree)
         
         agree.snp.makeConstraints { make in
             make.left.equalTo(disagree.snp.right).offset(11)
             make.right.equalTo(contentDView).offset(-16)
-            make.bottom.equalTo(contentDView).offset(-14);
+            make.bottom.equalTo(contentDView).offset(-24);
             make.width.equalTo(disagree);
             make.height.equalTo(38);
         }
@@ -73,7 +79,7 @@ public class EULAView: UIView,UITextViewDelegate,UIGestureRecognizerDelegate{
         disagree.snp.makeConstraints { make in
             make.left.equalTo(contentDView).offset(15);
             make.right.equalTo(agree.snp.left).offset(-11);
-            make.bottom.equalTo(contentDView).offset(-14);
+            make.bottom.equalTo(contentDView).offset(-24);
             make.width.equalTo(agree);
             make.height.equalTo(38);
         }
@@ -87,7 +93,7 @@ public class EULAView: UIView,UITextViewDelegate,UIGestureRecognizerDelegate{
         
         titleDLabel.snp.makeConstraints { make in
             make.left.equalTo(contentDView).offset(16)
-            make.top.equalTo(contentDView).offset(14)
+            make.top.equalTo(contentDView).offset(10)
             make.width.equalTo(20*9)
             make.height.equalTo(30)
         }
@@ -165,7 +171,6 @@ public class EULAView: UIView,UITextViewDelegate,UIGestureRecognizerDelegate{
         textView.linkTextAttributes = [
             NSAttributedString.Key.foregroundColor: UIColor.orange
         ]
-
     }
     
     func removeAlertView(){
@@ -187,16 +192,18 @@ public class EULAView: UIView,UITextViewDelegate,UIGestureRecognizerDelegate{
         return false
     }
     
-    func clickRemove(){
+     @objc func clickRemove(){
         removeAlertView()
         UserDefaults.standard .set(true, forKey: "FirstValue")
+        selectedData!(true)
     }
     
-    func clickDisagree(){
+     @objc func clickDisagree(){
         removeAlertView()
         UserDefaults.standard .removeObject(forKey: "FirstValue")
         print("退出程序")
-//        abort()
+        selectedData!(false)
+        exit(0)
     }
 
 }

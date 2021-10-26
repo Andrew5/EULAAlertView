@@ -152,7 +152,6 @@
 				DFBD332BF970078F1BB13ABA /* Pods-EULAViewSwift.debug.xcconfig */,
 				71F26D5BF6B1E292B1F5810D /* Pods-EULAViewSwift.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -517,6 +516,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = EULAViewSwift/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "弹窗";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -545,6 +545,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = EULAViewSwift/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "弹窗";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
